@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="mkt-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0E1018"/>
+      <stop offset="100%" stop-color="#05060A"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#mkt-bg)"/>
+  <g transform="translate(80, 50)">
+    <rect width="640" height="400" rx="16" fill="#131624" stroke="rgba(255,85,0,0.3)" stroke-width="2"/>
+    <text x="40" y="55" fill="#FFFFFF" font-family="Outfit, sans-serif" font-weight="800" font-size="22">DIGITAL MARKETING CAMPAIGNS</text>
+
+    <!-- Marketing Funnel / Target Visual -->
+    <circle cx="320" cy="230" r="120" fill="none" stroke="rgba(255,85,0,0.2)" stroke-width="2"/>
+    <circle cx="320" cy="230" r="85" fill="none" stroke="rgba(255,85,0,0.4)" stroke-width="2"/>
+    <circle cx="320" cy="230" r="50" fill="#FF5500" opacity="0.85"/>
+    <text x="320" y="236" fill="#FFFFFF" font-family="Outfit, sans-serif" font-weight="900" font-size="18" text-anchor="middle">ROI 10X</text>
+
+    <!-- Floating Cards -->
+    <rect x="50" y="120" width="160" height="80" rx="10" fill="#1A1E30" stroke="rgba(255,255,255,0.1)"/>
+    <text x="70" y="150" fill="#9E9EB3" font-family="Inter, sans-serif" font-size="12">CONVERSIONS</text>
+    <text x="70" y="180" fill="#FF5500" font-family="Outfit, sans-serif" font-weight="800" font-size="20">+485%</text>
+
+    <rect x="430" y="260" width="160" height="80" rx="10" fill="#1A1E30" stroke="rgba(255,255,255,0.1)"/>
+    <text x="450" y="290" fill="#9E9EB3" font-family="Inter, sans-serif" font-size="12">TOTAL REACH</text>
+    <text x="450" y="320" fill="#FFFFFF" font-family="Outfit, sans-serif" font-weight="800" font-size="20">2.4M+</text>
+  </g>
+</svg>

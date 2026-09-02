@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="sm-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F111A"/>
+      <stop offset="100%" stop-color="#08090D"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#sm-bg)"/>
+  <g transform="translate(80, 50)">
+    <rect width="640" height="400" rx="16" fill="#141726" stroke="rgba(255,85,0,0.3)" stroke-width="2"/>
+    <text x="40" y="55" fill="#FFFFFF" font-family="Outfit, sans-serif" font-weight="800" font-size="22">SOCIAL MEDIA MANAGEMENT</text>
+    
+    <!-- Phone Mockup -->
+    <rect x="230" y="90" width="180" height="290" rx="20" fill="#0A0B10" stroke="#FF5500" stroke-width="2.5"/>
+    <rect x="250" y="110" width="140" height="150" rx="8" fill="#1B1F33"/>
+    
+    <!-- Likes floating badge -->
+    <rect x="120" y="180" width="130" height="46" rx="23" fill="#FF5500"/>
+    <text x="185" y="209" fill="#FFFFFF" font-family="Outfit, sans-serif" font-weight="800" font-size="14" text-anchor="middle">❤️ 14.8K Likes</text>
+
+    <!-- Comments badge -->
+    <rect x="360" y="240" width="150" height="46" rx="23" fill="#1B1F33" stroke="rgba(255,85,0,0.4)"/>
+    <text x="435" y="269" fill="#FFFFFF" font-family="Outfit, sans-serif" font-weight="700" font-size="13" text-anchor="middle">💬 1,240 Viral Shares</text>
+  </g>
+</svg>

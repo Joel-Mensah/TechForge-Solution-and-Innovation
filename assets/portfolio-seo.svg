@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="seo-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#08090D"/>
+      <stop offset="100%" stop-color="#121522"/>
+    </linearGradient>
+    <linearGradient id="chart-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FF5500" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#FF5500" stop-opacity="0.0"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#seo-bg)"/>
+  
+  <g transform="translate(80, 60)">
+    <rect width="640" height="380" rx="16" fill="#0F121C" stroke="rgba(255,85,0,0.3)" stroke-width="2"/>
+    
+    <!-- Top Bar -->
+    <text x="40" y="50" fill="#FFFFFF" font-family="Outfit, sans-serif" font-weight="800" font-size="22">SEARCH ENGINE OPTIMIZATION</text>
+    <text x="40" y="75" fill="#FF5500" font-family="Inter, sans-serif" font-weight="600" font-size="14">#1 Google Organic Rankings & Keyword Authority</text>
+
+    <!-- Growth Graph -->
+    <path d="M 50 280 Q 150 250 250 180 T 450 120 T 580 70 L 580 320 L 50 320 Z" fill="url(#chart-grad)"/>
+    <path d="M 50 280 Q 150 250 250 180 T 450 120 T 580 70" fill="none" stroke="#FF5500" stroke-width="4"/>
+    
+    <!-- Graph Points -->
+    <circle cx="250" cy="180" r="6" fill="#FFFFFF" stroke="#FF5500" stroke-width="3"/>
+    <circle cx="450" cy="120" r="6" fill="#FFFFFF" stroke="#FF5500" stroke-width="3"/>
+    <circle cx="580" cy="70" r="8" fill="#FF5500" stroke="#FFFFFF" stroke-width="3"/>
+  </g>
+</svg>
