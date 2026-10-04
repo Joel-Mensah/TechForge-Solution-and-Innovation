@@ -278,13 +278,80 @@ function initPortfolioModal() {
 }
 
 /* ==========================================================================
-   6. Contact Form & Instant WhatsApp Inquiry Generator
+   6. Contact Form, Email Notifications & Instant WhatsApp Inquiry Generator
    ========================================================================== */
+
+// Business inbox that receives every website inquiry (via the FormSubmit.co
+// forwarding service — no backend server required).
+const INQUIRY_INBOX_EMAIL = 'techforgesolutions7@gmail.com';
+
+/**
+ * Forwards a form inquiry to the business email inbox using FormSubmit.co's
+ * AJAX endpoint. Resolves to true when FormSubmit.co accepted the message and
+ * false on any failure (logged) — either way the WhatsApp fallback flow still
+ * runs so leads are never lost.
+ * NOTE: The very first submission triggers a one-time "Activate Form" email
+ * from FormSubmit.co to the inbox above — click Activate once to go live.
+ */
+function sendInquiryEmail(data) {
+  const payload = {
+    _subject: `New Project Inquiry: ${data.service} — ${data.name}`,
+    _template: 'table',
+    _captcha: 'false',
+    Name: data.name,
+    'Phone / Contact': data.phone || 'Not provided',
+    'Service Interested': data.service,
+    'Budget Range': data.budget || 'Flexible / Requesting Quote',
+    'Project Details': data.details || 'I would like to discuss my project needs.',
+    'Submitted From': window.location.href,
+    'Submitted At': new Date().toLocaleString(),
+    _honey: data.honey || ''
+  };
+
+  // Abort the request if FormSubmit.co does not answer within 10s so the UI
+  // can never hang while waiting on the email to be sent.
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+  return fetch(`https://formsubmit.co/ajax/${INQUIRY_INBOX_EMAIL}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify(payload),
+    signal: controller.signal
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`FormSubmit.co responded with status ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((result) => {
+      console.info('Inquiry email delivered to ' + INQUIRY_INBOX_EMAIL + ':', result);
+      return true;
+    })
+    .catch((error) => {
+      console.warn('Inquiry email could not be delivered (WhatsApp fallback still active):', error);
+      return false;
+    })
+    .finally(() => clearTimeout(timeoutId));
+}
+
 function initContactForm() {
   const form = document.getElementById('inquiry-form');
   if (!form) return;
 
-  form.addEventListener('submit', (e) => {
+  const statusEl = document.getElementById('form-status');
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const submitBtnDefaultHTML = submitBtn ? submitBtn.innerHTML : '';
+
+  function showStatus(type, message) {
+    if (!statusEl) return;
+    const icon = type === 'success' ? 'fa-circle-check' : 'fa-triangle-exclamation';
+    statusEl.className = 'form-status visible ' + type;
+    statusEl.innerHTML = '<i class="fa-solid ' + icon + '"></i><span>' + message + '</span>';
+  }
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const name = document.getElementById('client-name').value.trim();
@@ -298,22 +365,57 @@ function initContactForm() {
       return;
     }
 
-    // Construct formatted WhatsApp message
+    const honey = document.getElementById('form-honey');
+
+    // Reset any previous status and enter the sending state
+    if (statusEl) {
+      statusEl.className = 'form-status';
+      statusEl.innerHTML = '';
+    }
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.style.background = '#25D366';
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending Your Inquiry...';
+    }
+
+    // 1) Email the inquiry to the business Gmail inbox and wait for the result
+    const emailSent = await sendInquiryEmail({
+      name: name,
+      phone: phone,
+      service: service,
+      budget: budget,
+      details: details,
+      honey: honey ? honey.value : ''
+    });
+
+    if (emailSent) {
+      showStatus('success', 'Thank you! Your inquiry has been emailed to our team. We will get back to you shortly.');
+    } else {
+      showStatus('error', 'We could not email your inquiry automatically — please send it via WhatsApp below so nothing is missed.');
+    }
+
+    // 2) Build the same details as a WhatsApp message (guaranteed fallback)
     const formattedMessage = `Hello TechForge Solutions! 👋%0A%0A*New Project Inquiry:*%0A• *Name:* ${encodeURIComponent(name)}%0A• *Phone/Contact:* ${encodeURIComponent(phone || 'Not provided')}%0A• *Service Interested:* ${encodeURIComponent(service)}%0A• *Budget Range:* ${encodeURIComponent(budget || 'Flexible')}%0A• *Project Details:* ${encodeURIComponent(details || 'I would like to discuss my project needs.')}`;
 
     const whatsappUrl = `https://wa.me/233200470536?text=${formattedMessage}`;
 
-    // Show success feedback
-    const btn = form.querySelector('button[type="submit"]');
-    const originalText = btn.innerHTML;
-    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Redirecting to WhatsApp...';
-    btn.style.background = '#25D366';
+    if (submitBtn) {
+      submitBtn.innerHTML = emailSent
+        ? '<i class="fa-solid fa-circle-check"></i> Inquiry Sent!'
+        : '<i class="fa-solid fa-paper-plane"></i> Open WhatsApp';
+    }
 
     setTimeout(() => {
       window.open(whatsappUrl, '_blank');
-      btn.innerHTML = originalText;
-      btn.style.background = '';
+
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.style.background = '';
+        submitBtn.innerHTML = emailSent
+          ? submitBtnDefaultHTML
+          : '<i class="fa-solid fa-paper-plane"></i> Submit & Connect on WhatsApp';
+      }
       form.reset();
-    }, 800);
+    }, 900);
   });
 }
